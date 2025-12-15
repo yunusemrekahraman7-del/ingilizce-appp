@@ -1,0 +1,345 @@
+#:kivy 2.1.0
+#:import dp kivy.metrics.dp
+
+ScreenManager:
+    WelcomeScreen:
+        name: "welcome"
+    ModuleListScreen:
+        name: "modules"
+    ModuleDetailScreen:
+        name: "module_detail"
+    WordStudyScreen:
+        name: "word_study"
+    StoryScreen:
+        name: "story"
+    QuizScreen:
+        name: "quiz"
+    ResultScreen:
+        name: "result"
+
+<WelcomeScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: "20dp"
+        spacing: "20dp"
+
+        Label:
+            text: "İngilizce Öğrenme Uygulaması"
+            font_size: "26sp"
+
+        Label:
+            text: "Kelime + Hikaye + Sınav + İlerleme Sistemi"
+            font_size: "16sp"
+
+        Button:
+            text: "Başla"
+            size_hint_y: None
+            height: "60dp"
+            on_release: app.root.current = "modules"
+
+<ModuleListScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: "10dp"
+        spacing: "10dp"
+
+        Label:
+            text: "Modül Listesi"
+            font_size: "22sp"
+            size_hint_y: None
+            height: "40dp"
+
+        ScrollView:
+            do_scroll_x: False
+            GridLayout:
+                id: modules_box
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "5dp"
+                padding: "5dp"
+
+        Button:
+            text: "Ana Menü"
+            size_hint_y: None
+            height: "50dp"
+            on_release: app.root.current = "welcome"
+
+<ModuleDetailScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: "10dp"
+        spacing: "10dp"
+
+        Label:
+            id: module_title
+            text: "Modül Başlığı"
+            font_size: "22sp"
+            size_hint_y: None
+            height: "40dp"
+
+        Label:
+            id: module_desc
+            text: ""
+            font_size: "14sp"
+            size_hint_y: None
+            height: "50dp"
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        Label:
+            text: "Hikaye Özeti:"
+            size_hint_y: None
+            height: "20dp"
+            font_size: "16sp"
+
+        ScrollView:
+            size_hint_y: 0.3
+            do_scroll_x: False
+            Label:
+                id: story_intro
+                text: ""
+                font_size: "14sp"
+                halign: "left"
+                valign: "top"
+                text_size: self.size
+                size_hint_y: None
+                height: self.texture_size[1] + dp(10)
+
+        Label:
+            id: info_label
+            text: ""
+            font_size: "13sp"
+            size_hint_y: None
+            height: "70dp"
+            halign: "left"
+            valign: "top"
+            text_size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            spacing: "10dp"
+
+            Button:
+                text: "Kelimeleri Çalış"
+                on_release: root.open_words()
+
+            Button:
+                text: "Hikayeyi Gör"
+                on_release: root.open_story()
+
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            spacing: "10dp"
+
+            Button:
+                text: "Modül Sınavı"
+                on_release: root.start_quiz()
+
+            Button:
+                text: "Geri (Modüller)"
+                on_release: app.root.current = "modules"
+
+<WordStudyScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: "10dp"
+        spacing: "10dp"
+
+        Label:
+            text: "Kelime Çalışma"
+            font_size: "22sp"
+            size_hint_y: None
+            height: "40dp"
+
+        Label:
+            id: word_label
+            text: "Kelime bilgisi"
+            font_size: "18sp"
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
+
+        Label:
+            id: example_label
+            text: ""
+            font_size: "16sp"
+            halign: "center"
+            valign: "middle"
+            text_size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            spacing: "10dp"
+
+            Button:
+                text: "Önceki"
+                on_release: root.prev_word()
+
+            Button:
+                text: "Sonraki"
+                on_release: root.next_word()
+
+            Button:
+                text: "🔊 Kelimeyi Oku"
+                on_release: root.speak_word()
+
+        Button:
+            text: "Geri (Modül Detay)"
+            size_hint_y: None
+            height: "50dp"
+            on_release: app.root.current = "module_detail"
+
+<StoryScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: "10dp"
+        spacing: "10dp"
+
+        Label:
+            id: story_title
+            text: "Hikaye"
+            font_size: "22sp"
+            size_hint_y: None
+            height: "40dp"
+
+        ScrollView:
+            do_scroll_x: False
+            Label:
+                id: story_text
+                text: ""
+                font_size: "16sp"
+                halign: "left"
+                valign: "top"
+                text_size: self.size
+                size_hint_y: None
+                height: self.texture_size[1] + dp(10)
+
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            spacing: "10dp"
+
+            Button:
+                text: "🔊 Hikayeyi Seslendir"
+                on_release: root.speak_story()
+
+            Button:
+                text: "Geri (Modül Detay)"
+                on_release: app.root.current = "module_detail"
+
+<QuizScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: "10dp"
+        spacing: "10dp"
+
+        Label:
+            text: "Modül Sınavı"
+            font_size: "22sp"
+            size_hint_y: None
+            height: "40dp"
+
+        Label:
+            id: question_label
+            text: root.question_text
+            font_size: "18sp"
+            halign: "left"
+            valign: "top"
+            text_size: self.size
+
+        ScrollView:
+            size_hint_y: 0.35
+            do_scroll_x: False
+            GridLayout:
+                id: options_box
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "5dp"
+                padding: "5dp"
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: "90dp"
+            spacing: "5dp"
+
+            TextInput:
+                id: answer_input
+                hint_text: "Yazılı cevap için buraya yaz (input tipi sorularda)"
+                multiline: False
+                size_hint_y: None
+                height: "40dp"
+
+            Button:
+                text: "Yazılı Cevabı Gönder"
+                size_hint_y: None
+                height: "40dp"
+                on_release: root.submit_input_answer()
+
+        Label:
+            id: feedback
+            text: ""
+            font_size: "16sp"
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            spacing: "10dp"
+
+            Button:
+                text: "Soruyu Atla"
+                on_release: root.next_question()
+
+            Button:
+                text: "Sınavı Bırak"
+                on_release: app.root.current = "module_detail"
+
+<ResultScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: "10dp"
+        spacing: "10dp"
+
+        Label:
+            id: result_title
+            text: "Sonuç"
+            font_size: "22sp"
+            size_hint_y: None
+            height: "40dp"
+
+        Label:
+            id: result_score
+            text: "Skor: 0%"
+            font_size: "20sp"
+            size_hint_y: None
+            height: "40dp"
+
+        Label:
+            id: result_message
+            text: ""
+            font_size: "16sp"
+            halign: "left"
+            valign: "top"
+            text_size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            spacing: "10dp"
+
+            Button:
+                text: "Modül Listesine Dön"
+                on_release: app.root.current = "modules"
+
+            Button:
+                text: "Ana Menü"
+                on_release: app.root.current = "welcome"
