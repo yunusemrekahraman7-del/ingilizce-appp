@@ -1,0 +1,125 @@
+{
+  "pass_score": 70,
+  "modules": [
+    {
+      "id": 1,
+      "title": "Newspaper Chase - Vocabulary & Story",
+      "level": "A1",
+      "description": "Level 0 hikayesi Newspaper Chase için temel kelimeler, kısa hikaye özeti ve sınav.",
+      "words": [
+        {
+          "word": "newspaper",
+          "meaning_tr": "gazete",
+          "example": "I read a newspaper every morning."
+        },
+        {
+          "word": "thief",
+          "meaning_tr": "hırsız",
+          "example": "The thief runs away from the shop."
+        },
+        {
+          "word": "police",
+          "meaning_tr": "polis",
+          "example": "The police are looking for the thief."
+        },
+        {
+          "word": "shop",
+          "meaning_tr": "dükkan",
+          "example": "The shop is next to the bank."
+        }
+      ],
+      "story": {
+        "title": "Newspaper Chase (Kısa Özet)",
+        "intro_tr": "Bir gazete dağıtıcısı ve kaçan bir hırsızın kısa macerası.",
+        "paragraphs": [
+          "A boy is delivering newspapers early in the morning. The streets are quiet and the sky is still dark.",
+          "Suddenly, a thief runs out of a jewelry shop. He has a bag in his hand and he jumps into a car.",
+          "The boy sees the thief and the car. Later, he helps the police to find the criminal.",
+          "In the end, the police catch the thief and the boy becomes a small hero in his town."
+        ]
+      },
+      "quiz": [
+        {
+          "id": 1,
+          "type": "choice",
+          "question": "“newspaper” kelimesinin Türkçesi nedir?",
+          "options": ["dergi", "gazete", "kitap", "radyo"],
+          "answer_index": 1
+        },
+        {
+          "id": 2,
+          "type": "choice",
+          "question": "Hırsız için hangi kelimeyi kullanırız?",
+          "options": ["police", "thief", "shop", "boy"],
+          "answer_index": 1
+        },
+        {
+          "id": 3,
+          "type": "tf",
+          "question": "The boy helps the police in the story.",
+          "answer_bool": true
+        },
+        {
+          "id": 4,
+          "type": "input",
+          "question": "“polis” kelimesinin İngilizcesi nedir?",
+          "answer": "police"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Carnival - Vocabulary & Story",
+      "level": "A1",
+      "description": "Carnival hikayesindeki temel kelimeler ve kısa bir özet ile sınav.",
+      "words": [
+        {
+          "word": "crowd",
+          "meaning_tr": "kalabalık",
+          "example": "There is a big crowd in the street."
+        },
+        {
+          "word": "float",
+          "meaning_tr": "geçit arabası",
+          "example": "The float moves slowly in the parade."
+        },
+        {
+          "word": "music",
+          "meaning_tr": "müzik",
+          "example": "The music is very loud."
+        }
+      ],
+      "story": {
+        "title": "Carnival (Kısa Özet)",
+        "intro_tr": "Renkli kostümler, müzik ve kalabalıklarla dolu bir karnaval günü.",
+        "paragraphs": [
+          "It is carnival day in the town. The streets are full of people and colourful decorations.",
+          "There are many floats, dancers and musicians. Everyone is happy and excited.",
+          "In the middle of the crowd, a small problem appears and the hero of the story must act.",
+          "At the end of the day, the problem is solved and the carnival finishes with fireworks."
+        ]
+      },
+      "quiz": [
+        {
+          "id": 1,
+          "type": "choice",
+          "question": "“crowd” kelimesinin Türkçesi nedir?",
+          "options": ["şenlik", "kalabalık", "müzik", "geçit arabası"],
+          "answer_index": 1
+        },
+        {
+          "id": 2,
+          "type": "tf",
+          "question": "There is only one person in the street on carnival day.",
+          "answer_bool": false
+        },
+        {
+          "id": 3,
+          "type": "input",
+          "question": "“müzik” kelimesinin İngilizcesi nedir?",
+          "answer": "music"
+        }
+      ]
+    }
+  ]
+}
