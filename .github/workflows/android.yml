@@ -43,6 +43,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install buildozer cython==0.29.36
 
+      # 🔥 ASIL EKSİK OLAN ADIM BURASI
+      - name: Setup Android SDK & Build-Tools
+        run: |
+          set -e
+          export ANDROID_SDK_ROOT="$HOME/.buildozer/android/platform/android-sdk"
+          export ANDROID_HOME="$ANDROID_SDK_ROOT"
+
+          yes | buildozer android sdk
+          yes | sdkmanager --licenses || true
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
       - name: Build APK (debug)
         run: |
           buildozer -v android debug
