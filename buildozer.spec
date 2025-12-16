@@ -13,13 +13,13 @@ fullscreen = 0
 # android.permissions = RECORD_AUDIO
 
 # Android uyumluluk
-android.minapi = 21
-android.api = 34
-[app]
-# ... senin mevcut ayarların ...
 android.accept_sdk_license = True
+android.api = 34
+android.minapi = 21
+
 
 [buildozer]
 log_level = 2
 warn_on_root = 1
+
 
