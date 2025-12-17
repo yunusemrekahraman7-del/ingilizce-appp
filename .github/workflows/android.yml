@@ -3,11 +3,18 @@ name: Build Android APK (Kivy/Buildozer)
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-apk:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    env:
+      ANDROID_API: "34"
+      ANDROID_BUILD_TOOLS: "34.0.0"
+      ANDROID_NDK_VERSION: "25.2.9519653"
+      ANDROID_CMAKE_VERSION: "3.22.1"
 
     steps:
       - name: Checkout
@@ -18,44 +25,70 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install system deps
+      # ✅ Kivy/Buildozer + autotools + sık kullanılan native bağımlılıklar için host paketleri
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            zip unzip git \
+            git zip unzip \
             build-essential \
             openjdk-17-jdk \
-            python3-pip \
-            python3-venv \
+            pkg-config \
+            autoconf automake libtool libtool-bin m4 gettext \
+            cmake ninja-build \
             libffi-dev libssl-dev \
-            liblzma-dev zlib1g-dev \
+            zlib1g-dev liblzma-dev \
             libjpeg-dev \
             libsqlite3-dev \
             libncurses5-dev libncursesw5-dev \
             libreadline-dev \
-            libgdbm-dev \
-            libdb5.3-dev \
+            libgdbm-dev libdb5.3-dev \
             libexpat1-dev \
-            libgl1-mesa-dev
+            libgl1-mesa-dev \
+            libsndfile1
 
-      - name: Install Buildozer & Cython
+      - name: Upgrade pip and install Buildozer
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip setuptools wheel
           pip install buildozer cython==0.29.36
 
-      # ✅ Android SDK + Build-Tools (aidl) kurulumunu DOĞRU şekilde yap
-      - name: Setup Android SDK (cmdline-tools + build-tools)
+      # ✅ Android SDK kurulumunu resmi action ile yap (sdkmanager hazır gelir)
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android packages (build-tools, platforms)
+      # ✅ Lisans + build-tools (AIDL burada) + platform + ndk + cmake kesin kurulsun
+      - name: Install Android SDK packages
         run: |
           yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-${ANDROID_API}" \
+            "build-tools;${ANDROID_BUILD_TOOLS}" \
+            "ndk;${ANDROID_NDK_VERSION}" \
+            "cmake;${ANDROID_CMAKE_VERSION}"
 
+      # ✅ Cache (rastgele tekrar hatalarını ve süreyi azaltır)
+      - name: Cache Buildozer and Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            ~/.gradle
+          key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec', '**/*.py', '**/*.kv', '**/*.json') }}
+          restore-keys: |
+            ${{ runner.os }}-buildozer-
+
+      # ✅ Bazı tariflerde configure/autoreconf tetiklenebilir; ortam hazır kalsın
+      - name: Autotools sanity (safe)
+        run: |
+          autoreconf --install --force --verbose || true
+
+      # ✅ Build
       - name: Build APK (debug)
         run: |
           buildozer -v android debug
 
+      # ✅ APK yükle
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
