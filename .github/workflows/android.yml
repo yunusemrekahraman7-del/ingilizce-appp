@@ -43,32 +43,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install buildozer cython==0.29.36
 
-      # ✅ AIDL hatasını çözen adım (build-tools + platformlar + lisans)
-      - name: Install Android SDK Build-Tools (aidl)
+      # ✅ Android SDK + Build-Tools (aidl) kurulumunu DOĞRU şekilde yap
+      - name: Setup Android SDK (cmdline-tools + build-tools)
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android packages (build-tools, platforms)
         run: |
-          set -e
-
-          # Buildozer'ın SDK dizini
-          export ANDROID_SDK_ROOT="$HOME/.buildozer/android/platform/android-sdk"
-          export ANDROID_HOME="$ANDROID_SDK_ROOT"
-
-          # SDK/cmdline-tools'i buildozer üzerinden indir
-          yes | buildozer android sdk
-
-          # sdkmanager yolu (bazı ortamlarda farklı olabilir)
-          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
-          if [ ! -f "$SDKMANAGER" ]; then
-            SDKMANAGER="$ANDROID_SDK_ROOT/tools/bin/sdkmanager"
-          fi
-
-          # Lisansları kabul et (build-tools kurulumu için şart)
-          yes | $SDKMANAGER --sdk_root="$ANDROID_SDK_ROOT" --licenses || true
-
-          # AIDL içeren build-tools + gerekli platformlar
-          $SDKMANAGER --sdk_root="$ANDROID_SDK_ROOT" \
-            "platform-tools" \
-            "platforms;android-34" \
-            "build-tools;34.0.0"
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Build APK (debug)
         run: |
